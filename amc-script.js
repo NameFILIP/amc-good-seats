@@ -266,7 +266,7 @@ async function checkShowtimesForDateRange(theaterId) {
     const showtimes = await getShowtimes(dateString, theaterId, MOVIE_NAME);
     showtimes.sort((a, b) => new Date(a.when) - new Date(b.when));
 
-    delay(DELAY_MS);
+    delay((1 + Math.random()) * DELAY_MS);
 
     for (let j = 0; j < showtimes.length; j++) {
       const showtime = showtimes[j];
@@ -289,7 +289,7 @@ async function checkShowtimesForDateRange(theaterId) {
           goodSeats: onlyGood.join(),
         };
       }
-      delay(DELAY_MS);
+      delay((1 + Math.random()) * DELAY_MS);
     }
   }
   if (Object.keys(goodSeatsForShowtimes).length > 0) {
