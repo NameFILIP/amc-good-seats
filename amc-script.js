@@ -16,6 +16,19 @@ function getShowtimeURL(yyyyMMdd, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
 }
 
+const getDayOfWeek = (dateString) => {
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return days[new Date(dateString).getDay()];
+};
+
 async function getApolloData(url) {
   try {
     const response = await fetch(url);
@@ -59,10 +72,6 @@ async function getShowtimes(yyyyMMdd, name) {
     const imax70mm = nodes.some((node) => node.code === THEATER_TYPE_CODE);
     return imax70mm;
   });
-
-  if (imaxShowtimes.length > 0) {
-    console.log({ yyyyMMdd, name, imaxShowtimes });
-  }
 
   return imaxShowtimes;
 }
@@ -116,6 +125,7 @@ async function checkShowtime(yyyyMMdd, showtimeId) {
     console.log(
       "Date:",
       yyyyMMdd,
+      getDayOfWeek(yyyyMMdd),
       "Showtime ID:",
       showtimeId,
       "All Seats #:",
