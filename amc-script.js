@@ -4,7 +4,9 @@
 
 const MOVIE_NAME = "Dune: Part Two";
 const MOVIE_THEATER = "amc-lincoln-square-13";
-const SHOWTIME_ATTRIBUTE = "70mm";
+const SHOWTIME_ATTRIBUTE = "imax";
+
+// TODO: Change to 20
 const DAYS = 20;
 const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
 const START_COLUMN = 10;
@@ -12,8 +14,23 @@ const END_COLUMN = 35;
 const AMC_URL = "https://www.amctheatres.com";
 const DELAY_MS = 500;
 
-function getShowtimeURL(yyyyMMdd, showtimeId) {
-  return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
+const GOOD_SEAT_BUFFER_RATIO = 0.3;
+
+const NYC_AMCs = [
+  "amc-orpheum-7",
+  "amc-lincoln-square-13",
+  "amc-84th-street-6",
+  "amc-magic-johnson-harlem-9",
+  "amc-empire-25",
+  "amc-kips-bay-15",
+  "amc-34th-street-14",
+  "amc-19th-st-east-6",
+  "amc-village-7",
+  "amc-newport-centre-11",
+];
+
+function getShowtimeURL(yyyyMMdd, theaterId, showtimeId) {
+  return `/showtimes/all/${yyyyMMdd}/${theaterId}/all/${showtimeId}`;
 }
 
 const getDayOfWeek = (dateString) => {
@@ -44,8 +61,8 @@ async function getApolloData(url) {
   }
 }
 
-async function getShowtimes(yyyyMMdd, name) {
-  const url = `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all`;
+async function getShowtimes(yyyyMMdd, theaterId, name) {
+  const url = `/showtimes/all/${yyyyMMdd}/${theaterId}/all`;
   const apolloData = await getApolloData(url);
   if (!apolloData) {
     return [];
@@ -64,18 +81,20 @@ async function getShowtimes(yyyyMMdd, name) {
       showtime.__typename === "Showtime" && showtime.movie.__ref === movieId
   );
 
-  const imaxShowtimes = showtimes.filter((showtime) => {
+  const filteredShowtimes = showtimes.filter((showtime) => {
     const attrubutesId = showtime.attributes.__ref;
     const attributes = apolloData[attrubutesId];
     const edges = attributes.edges.map((edge) => apolloData[edge.__ref]);
     const nodes = edges.map((edge) => apolloData[edge.node.__ref]);
-    const imax70mm = nodes.some((node) => node.name === SHOWTIME_ATTRIBUTE);
-    return imax70mm;
+    const hasAttribute = nodes.some((node) =>
+      node.name.toLowerCase().includes(SHOWTIME_ATTRIBUTE)
+    );
+    return hasAttribute;
   });
 
-  console.log("Date:", yyyyMMdd, "Showtimes:", imaxShowtimes.length);
+  console.log("Date:", yyyyMMdd, "Showtimes:", filteredShowtimes.length);
 
-  return imaxShowtimes;
+  return filteredShowtimes;
 }
 
 /*
@@ -95,33 +114,86 @@ const goodSeats = generateGoodSeats();
 
 function sortSeats(seats) {
   seats.sort((a, b) => {
-    const rowA = a.name[0];
-    const rowB = b.name[0];
+    const rowA = getRow(a);
+    const rowB = getRow(b);
     if (rowA !== rowB) {
       return rowA.localeCompare(rowB);
     }
-    const columnA = parseInt(a.name.slice(1));
-    const columnB = parseInt(b.name.slice(1));
+    const columnA = getColumn(a);
+    const columnB = getColumn(b);
     return columnA - columnB;
   });
 }
 
-async function checkShowtime(yyyyMMdd, showtimeId) {
-  const url = getShowtimeURL(yyyyMMdd, showtimeId);
+const getRow = (seat) => seat.name[0];
+const getColumn = (seat) => parseInt(seat.name.slice(1), 10);
+
+function getSeatMap(seats) {
+  return seats.reduce((map, seat) => {
+    const row = getRow(seat);
+    const column = getColumn(seat);
+    map[row] = map[row] ?? [];
+    map[row].push(column);
+    return map;
+  }, {});
+}
+
+const A = "A".charCodeAt(0);
+const numberToCharacter = (number) => String.fromCharCode(A + number);
+const characterToNumber = (character) => character.charCodeAt(0) - A;
+
+function getGoodRows(seatMap) {
+  const allRows = Object.keys(seatMap).sort();
+  const minRow = Math.min(...allRows.map(characterToNumber));
+  const maxRow = Math.max(...allRows.map(characterToNumber));
+  const rowsCount = maxRow - minRow;
+
+  const buffer = rowsCount * GOOD_SEAT_BUFFER_RATIO;
+  const goodRows = allRows.filter(
+    (row) =>
+      characterToNumber(row) >= minRow + buffer &&
+      characterToNumber(row) <= maxRow - buffer
+  );
+  return goodRows;
+}
+
+function getGoodColumns(seatMap, row) {
+  const columns = seatMap[row];
+  const minColumn = Math.min(...columns);
+  const maxColumn = Math.max(...columns);
+  const columnsCount = maxColumn - minColumn;
+  const buffer = columnsCount * GOOD_SEAT_BUFFER_RATIO;
+  const goodColumns = columns.filter(
+    (column) => column >= minColumn + buffer && column <= maxColumn - buffer
+  );
+  return goodColumns;
+}
+
+async function checkShowtime(yyyyMMdd, theaterId, showtimeId) {
+  const url = getShowtimeURL(yyyyMMdd, theaterId, showtimeId);
   const apolloData = await getApolloData(url);
   if (!apolloData) {
     return [];
   }
+  const allSeats = Object.values(apolloData).filter(
+    (seat) => seat.__typename === "Seat" && seat.type === "CanReserve"
+  );
+  const seatMap = getSeatMap(allSeats);
+  const goodRows = getGoodRows(seatMap);
 
-  const seats = Object.values(apolloData).filter(
-    (seat) =>
-      seat.__typename === "Seat" &&
-      seat.available &&
-      seat.shouldDisplay &&
-      seat.type === "CanReserve"
+  const availableSeats = Object.values(allSeats).filter(
+    (seat) => seat.available && seat.shouldDisplay
   );
 
-  const onlyGood = seats.filter((seat) => goodSeats.has(seat.name));
+  const onlyGood = availableSeats.filter((seat) => {
+    const row = getRow(seat);
+    const column = getColumn(seat);
+    if (!goodRows.includes(row)) {
+      return false;
+    }
+    const goodColumns = getGoodColumns(seatMap, row);
+    return goodColumns.includes(column);
+  });
 
   if (onlyGood.length > 0) {
     console.log(
@@ -131,7 +203,7 @@ async function checkShowtime(yyyyMMdd, showtimeId) {
       "Showtime ID:",
       showtimeId,
       "All Seats #:",
-      seats.length,
+      availableSeats.length,
       "Good Seats #:",
       onlyGood.length,
       "Good Seats Names:",
@@ -166,20 +238,28 @@ async function checkShowtimesForDateRange() {
 
   const goodSeatsForShowtimes = {};
 
+  const theaterId = MOVIE_THEATER;
+
   for (let i = 0; i < dateStrings.length; i++) {
     const dateString = dateStrings[i];
-    const showtimes = await getShowtimes(dateString, MOVIE_NAME);
+    const showtimes = await getShowtimes(dateString, theaterId, MOVIE_NAME);
 
     delay(DELAY_MS);
 
     for (let j = 0; j < showtimes.length; j++) {
       const showtime = showtimes[j];
-      const onlyGood = await checkShowtime(dateString, showtime.showtimeId);
+      const onlyGood = await checkShowtime(
+        dateString,
+        theaterId,
+        showtime.showtimeId
+      );
       if (onlyGood.length > 0) {
         goodSeatsForShowtimes[dateString] =
           goodSeatsForShowtimes[dateString] ?? {};
         goodSeatsForShowtimes[dateString][showtime.showtimeId] = {
-          url: AMC_URL + getShowtimeURL(dateString, showtime.showtimeId),
+          url:
+            AMC_URL +
+            getShowtimeURL(dateString, theaterId, showtime.showtimeId),
           time: new Date(showtime.when).toLocaleTimeString(),
           goodSeats: onlyGood,
           dayOfWeek: getDayOfWeek(dateString),
