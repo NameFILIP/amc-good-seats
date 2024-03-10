@@ -12,6 +12,9 @@
 5. Enjoy the movie!
 
 ## Good Seats Grid
+
+Seats that fall into the green rectangle are considered good.
+
 <img width="500" alt="image" src="https://github.com/NameFILIP/amc-good-seats/assets/834796/badbd791-f3f7-42b3-bd35-2feac4efdf3a">
 
 ## Sample Output
