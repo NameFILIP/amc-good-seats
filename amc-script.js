@@ -6,11 +6,7 @@ const MOVIE_NAME = "Dune: Part Two";
 const MOVIE_THEATER = "amc-lincoln-square-13";
 const SHOWTIME_ATTRIBUTE = "imax";
 
-// TODO: Change to 20
 const DAYS = 20;
-const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
-const START_COLUMN = 10;
-const END_COLUMN = 35;
 const AMC_URL = "https://www.amctheatres.com";
 const DELAY_MS = 500;
 
@@ -46,6 +42,9 @@ const getDayOfWeek = (dateString) => {
   return days[new Date(dateString).getDay()];
 };
 
+/*
+ * Fetch Apollo data from a given URL.
+ */
 async function getApolloData(url) {
   try {
     const response = await fetch(url);
@@ -61,6 +60,9 @@ async function getApolloData(url) {
   }
 }
 
+/*
+ * Get showtimes for a given date and theater.
+ */
 async function getShowtimes(yyyyMMdd, theaterId, name) {
   const url = `/showtimes/all/${yyyyMMdd}/${theaterId}/all`;
   const apolloData = await getApolloData(url);
@@ -92,26 +94,16 @@ async function getShowtimes(yyyyMMdd, theaterId, name) {
     return hasAttribute;
   });
 
-  console.log("Date:", yyyyMMdd, "Showtimes:", filteredShowtimes.length);
+  if (filteredShowtimes.length > 0) {
+    console.log("Date:", yyyyMMdd, "Showtimes:", filteredShowtimes.length);
+  }
 
   return filteredShowtimes;
 }
 
 /*
- *  Good seats are: E-L 10-35
+ * Sort seats by row (letter) and column (number).
  */
-function generateGoodSeats() {
-  const goodSeats = new Set();
-  GOOD_ROWS.forEach((row) => {
-    for (let i = START_COLUMN; i <= END_COLUMN; i++) {
-      goodSeats.add(`${row}${i}`);
-    }
-  });
-  return goodSeats;
-}
-
-const goodSeats = generateGoodSeats();
-
 function sortSeats(seats) {
   seats.sort((a, b) => {
     const rowA = getRow(a);
@@ -128,6 +120,9 @@ function sortSeats(seats) {
 const getRow = (seat) => seat.name[0];
 const getColumn = (seat) => parseInt(seat.name.slice(1), 10);
 
+/*
+ * Get seat map from a list of seats.
+ */
 function getSeatMap(seats) {
   return seats.reduce((map, seat) => {
     const row = getRow(seat);
@@ -142,6 +137,9 @@ const A = "A".charCodeAt(0);
 const numberToCharacter = (number) => String.fromCharCode(A + number);
 const characterToNumber = (character) => character.charCodeAt(0) - A;
 
+/*
+ * Get good rows for a given seat map.
+ */
 function getGoodRows(seatMap) {
   const allRows = Object.keys(seatMap).sort();
   const minRow = Math.min(...allRows.map(characterToNumber));
@@ -157,6 +155,9 @@ function getGoodRows(seatMap) {
   return goodRows;
 }
 
+/*
+ * Get good columns for a given row.
+ */
 function getGoodColumns(seatMap, row) {
   const columns = seatMap[row];
   const minColumn = Math.min(...columns);
@@ -169,8 +170,11 @@ function getGoodColumns(seatMap, row) {
   return goodColumns;
 }
 
-async function checkShowtime(yyyyMMdd, theaterId, showtimeId) {
-  const url = getShowtimeURL(yyyyMMdd, theaterId, showtimeId);
+/*
+ * Check showtime for good seats.
+ */
+async function checkShowtime(yyyyMMdd, theaterId, showtime) {
+  const url = getShowtimeURL(yyyyMMdd, theaterId, showtime.showtimeId);
   const apolloData = await getApolloData(url);
   if (!apolloData) {
     return [];
@@ -199,9 +203,9 @@ async function checkShowtime(yyyyMMdd, theaterId, showtimeId) {
     console.log(
       "Date:",
       yyyyMMdd,
-      getDayOfWeek(yyyyMMdd),
+      getDayOfWeek(showtime.when),
       "Showtime ID:",
-      showtimeId,
+      showtime.showtimeId,
       "All Seats #:",
       availableSeats.length,
       "Good Seats #:",
@@ -217,7 +221,9 @@ async function checkShowtime(yyyyMMdd, theaterId, showtimeId) {
   return onlyGood.map((seat) => seat.name);
 }
 
-// Generate date strings from today for the next 30 days in format 'YYYY-MM-DD'
+/*
+ * Generate date strings from today for the next 30 days in format 'YYYY-MM-DD'
+ */
 function generateDateStrings() {
   const dateStrings = [];
   for (let i = 0; i < DAYS; i++) {
@@ -233,13 +239,13 @@ function generateDateStrings() {
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function checkShowtimesForDateRange() {
-  const dateStrings = generateDateStrings();
-
+/*
+ * Main function to check showtimes for a given theater.
+ */
+async function checkShowtimesForDateRange(theaterId) {
   const goodSeatsForShowtimes = {};
 
-  const theaterId = MOVIE_THEATER;
-
+  const dateStrings = generateDateStrings();
   for (let i = 0; i < dateStrings.length; i++) {
     const dateString = dateStrings[i];
     const showtimes = await getShowtimes(dateString, theaterId, MOVIE_NAME);
@@ -248,11 +254,13 @@ async function checkShowtimesForDateRange() {
 
     for (let j = 0; j < showtimes.length; j++) {
       const showtime = showtimes[j];
-      const onlyGood = await checkShowtime(
-        dateString,
-        theaterId,
-        showtime.showtimeId
-      );
+
+      // Enable to check only for Tuesdays (discount day for AMC)
+      // if (getDayOfWeek(showtime.when) !== "Tuesday") {
+      //   continue;
+      // }
+
+      const onlyGood = await checkShowtime(dateString, theaterId, showtime);
       if (onlyGood.length > 0) {
         goodSeatsForShowtimes[dateString] =
           goodSeatsForShowtimes[dateString] ?? {};
@@ -262,7 +270,7 @@ async function checkShowtimesForDateRange() {
             getShowtimeURL(dateString, theaterId, showtime.showtimeId),
           time: new Date(showtime.when).toLocaleTimeString(),
           goodSeats: onlyGood,
-          dayOfWeek: getDayOfWeek(dateString),
+          dayOfWeek: getDayOfWeek(showtime.when),
         };
       }
       delay(DELAY_MS);
@@ -271,4 +279,16 @@ async function checkShowtimesForDateRange() {
   console.log(JSON.stringify(goodSeatsForShowtimes, null, 2));
 }
 
-checkShowtimesForDateRange();
+checkShowtimesForDateRange(MOVIE_THEATER);
+
+/*
+ * Main function to check showtimes for all AMC theaters in NYC.
+ */
+async function checkShowtimesForAllAMCs() {
+  for (let i = 0; i < NYC_AMCs.length; i++) {
+    console.log("Checking AMC:", NYC_AMCs[i]);
+    await checkShowtimesForDateRange(NYC_AMCs[i]);
+  }
+}
+
+// checkShowtimesForAllAMCs();
