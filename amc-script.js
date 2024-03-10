@@ -3,12 +3,12 @@
  */
 
 const MOVIE_NAME = "Dune: Part Two";
+const MOVIE_THEATER = "amc-lincoln-square-13";
+const THEATER_TYPE_CODE = "imax70mm";
 const DAYS = 30;
 const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
 const START_COLUMN = 10;
 const END_COLUMN = 35;
-const MOVIE_THEATER = "amc-lincoln-square-13";
-const THEATER_TYPE_CODE = "imax70mm";
 
 function getShowtimeURL(yyyyMMdd, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
@@ -163,7 +163,7 @@ async function checkShowtimesForDateRange() {
         const isTuesday = new Date(dateString).getDay() === 2;
         goodSeatsForShowtimes[dateString][showtime.showtimeId] = {
           url: getShowtimeURL(dateString, showtime.showtimeId),
-          seats: onlyGood,
+          goodSeats: onlyGood,
           isTuesday,
         };
       }
