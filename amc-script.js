@@ -10,6 +10,7 @@ const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
 const START_COLUMN = 10;
 const END_COLUMN = 35;
 const AMC_URL = "https://www.amctheatres.com";
+const DELAY_MS = 500;
 
 function getShowtimeURL(yyyyMMdd, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
@@ -152,7 +153,7 @@ async function checkShowtimesForDateRange() {
   for (let i = 0; i < dateStrings.length; i++) {
     const dateString = dateStrings[i];
     const showtimes = await getShowtimes(dateString, MOVIE_NAME);
-    delay(1000);
+    delay(DELAY_MS);
 
     for (let j = 0; j < showtimes.length; j++) {
       const showtime = showtimes[j];
@@ -168,7 +169,7 @@ async function checkShowtimesForDateRange() {
           isTuesday,
         };
       }
-      delay(1000);
+      delay(DELAY_MS);
     }
   }
   console.log(JSON.stringify(goodSeatsForShowtimes, null, 2));
