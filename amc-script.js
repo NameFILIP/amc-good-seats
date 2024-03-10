@@ -12,19 +12,6 @@ const END_COLUMN = 35;
 const AMC_URL = "https://www.amctheatres.com";
 const DELAY_MS = 500;
 
-const NYC_AMCs = [
-  "amc-orpheum-7",
-  "amc-lincoln-square-13",
-  "amc-84th-street-6",
-  "amc-magic-johnson-harlem-9",
-  "amc-empire-25",
-  "amc-kips-bay-15",
-  "amc-34th-street-14",
-  "amc-19th-st-east-6",
-  "amc-village-7",
-  "amc-newport-centre-11",
-];
-
 function getShowtimeURL(yyyyMMdd, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
 }
