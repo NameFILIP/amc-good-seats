@@ -178,10 +178,9 @@ async function checkShowtimesForDateRange() {
       if (onlyGood.length > 0) {
         goodSeatsForShowtimes[dateString] =
           goodSeatsForShowtimes[dateString] ?? {};
-        // Check if dateString is Tuesday (discounted tickets day)
-        const isTuesday = new Date(dateString).getDay() === 2;
         goodSeatsForShowtimes[dateString][showtime.showtimeId] = {
           url: AMC_URL + getShowtimeURL(dateString, showtime.showtimeId),
+          time: new Date(showtime.when).toLocaleTimeString(),
           goodSeats: onlyGood,
           dayOfWeek: getDayOfWeek(dateString),
         };
