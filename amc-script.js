@@ -28,7 +28,7 @@ const DAYS = 14;
 const AMC_URL = "https://www.amctheatres.com";
 const DELAY_MS = 500;
 
-const GOOD_SEAT_BUFFER_RATIO = 0.3;
+const GOOD_SEAT_BUFFER_RATIO = 0.33;
 
 const INVALID_SEATS = ["NotASeat", "Companion", "Wheelchair"];
 
