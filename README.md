@@ -5,10 +5,10 @@
    1. `DAYS` - defines how many days forward to look at
    2. `SHOWTIME_ATTRIBUTE` - can be `imax`, `dolby`, `laser`, etc
    3. `CHECK_ONLY_TUESDAYS` - set to `true` if only interested in `Tuesday`s (discount day at AMC)
-2. Copy and run script to the DevTools console on the AMC website.
-3. See the ouput that contains good seats found.
+2. Copy and run the script to the DevTools console on the [AMC website](https://www.amctheatres.com/).
+3. Wait a couple of minutes and see the output that contains good seats found.
 4. Buy the tickets.
-5. Enjoyt the movie!
+5. Enjoy the movie!
 
 
 ## Sample output
