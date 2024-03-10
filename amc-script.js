@@ -1,3 +1,7 @@
+/*
+ * Run this script from DevTools console on the AMC website.
+ */
+
 const MOVIE_NAME = "Dune: Part Two";
 const DAYS = 30;
 const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
@@ -70,6 +74,19 @@ function generateGoodSeats() {
 
 const goodSeats = generateGoodSeats();
 
+function sortSeats(seats) {
+  seats.sort((a, b) => {
+    const rowA = a.name[0];
+    const rowB = b.name[0];
+    if (rowA !== rowB) {
+      return rowA.localeCompare(rowB);
+    }
+    const columnA = parseInt(a.name.slice(1));
+    const columnB = parseInt(b.name.slice(1));
+    return columnA - columnB;
+  });
+}
+
 async function checkShowtime(yyyyMMdd, showtimeId) {
   const url = `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
   const apolloData = await getApolloData(url);
@@ -100,7 +117,10 @@ async function checkShowtime(yyyyMMdd, showtimeId) {
     onlyGood.map((seat) => seat.name)
   );
 
-  return onlyGood;
+  // Sort by seat name (e.g. E1, E9, E10, E11, E12, ...)
+  sortSeats(onlyGood);
+
+  return onlyGood.map((seat) => seat.name);
 }
 
 // Generate date strings from today for the next 30 days in format 'YYYY-MM-DD'
@@ -133,7 +153,9 @@ async function checkShowtimesForDateRange() {
       const showtime = showtimes[j];
       const onlyGood = await checkShowtime(dateString, showtime.showtimeId);
       if (onlyGood.length > 0) {
-        goodSeatsForShowtimes[showtime.id] = onlyGood;
+        goodSeatsForShowtimes[dateString] =
+          goodSeatsForShowtimes[dateString] ?? {};
+        goodSeatsForShowtimes[dateString][showtime.showtimeId] = onlyGood;
       }
       delay(1000);
     }
