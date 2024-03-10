@@ -4,7 +4,10 @@
 
 const MOVIE_NAME = "Dune: Part Two";
 
-const NYC_AMC_THEATERS = [
+/*
+ * The list below is the AMC Theaters in NYC
+ */
+const AMC_THEATERS = [
   "amc-orpheum-7",
   "amc-lincoln-square-13",
   "amc-84th-street-6",
@@ -16,9 +19,11 @@ const NYC_AMC_THEATERS = [
   "amc-village-7",
   "amc-newport-centre-11",
 ];
-const MOVIE_THEATER = NYC_AMC_THEATERS[1];
 const SHOWTIME_ATTRIBUTE = "imax"; // or "dolby", etc. See more values in amc-constants.js
 
+/*
+ * How many days forward to look at
+ */
 const DAYS = 14;
 const AMC_URL = "https://www.amctheatres.com";
 const DELAY_MS = 500;
@@ -27,7 +32,9 @@ const GOOD_SEAT_BUFFER_RATIO = 0.3;
 
 const INVALID_SEATS = ["NotASeat", "Companion", "Wheelchair"];
 
-// Enable to check only for Tuesdays (discount day for AMC)
+/*
+ * Enable to check only for Tuesdays (discount day for AMC)
+ */
 const CHECK_ONLY_TUESDAYS = false;
 
 function getShowtimeURL(yyyyMMdd, theaterId, showtimeId) {
@@ -290,15 +297,18 @@ async function checkShowtimesForDateRange(theaterId) {
   }
 }
 
-// checkShowtimesForDateRange(MOVIE_THEATER);
+/*
+ * Main function to check showtimes for a single AMC theater
+ */
+// checkShowtimesForDateRange(AMC_THEATERS[1]);
 
 /*
  * Main function to check showtimes for all AMC theaters in NYC.
  */
 async function checkShowtimesForAllAMCs() {
-  for (let i = 0; i < NYC_AMC_THEATERS.length; i++) {
-    console.log("Checking AMC:", NYC_AMC_THEATERS[i]);
-    await checkShowtimesForDateRange(NYC_AMC_THEATERS[i]);
+  for (let i = 0; i < AMC_THEATERS.length; i++) {
+    console.log("Checking AMC:", AMC_THEATERS[i]);
+    await checkShowtimesForDateRange(AMC_THEATERS[i]);
   }
 }
 
