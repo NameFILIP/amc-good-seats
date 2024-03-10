@@ -1,17 +1,20 @@
 # AMC Good Seats
 
+## Instructions
 1. Modify the like `MOVIE_NAME`,  `SHOWTIME_ATTRIBUTE`, constants on top of [amc-script](/amc-script.js) (See [amc-constants](/amc-constants.js) for different values).
    1. `MOVIE_NAME` - set the movie name
-   1. `DAYS` - defines how many days forward to look at
-   2. `SHOWTIME_ATTRIBUTE` - can be `imax`, `dolby`, `laser`, etc
-   3. `CHECK_ONLY_TUESDAYS` - set to `true` if only interested in `Tuesday`s (discount day at AMC)
+   2. `DAYS` - defines how many days forward to look at
+   3. `SHOWTIME_ATTRIBUTE` - can be `imax`, `dolby`, `laser`, etc
+   4. `CHECK_ONLY_TUESDAYS` - set to `true` if only interested in `Tuesday`s (discount day at AMC)
 2. Copy and run the script to the DevTools console on the [AMC website](https://www.amctheatres.com/).
 3. Wait a couple of minutes and see the output that contains good seats found.
 4. Buy the tickets.
 5. Enjoy the movie!
 
+## Good Seats Grid
+<img width="500" alt="image" src="https://github.com/NameFILIP/amc-good-seats/assets/834796/badbd791-f3f7-42b3-bd35-2feac4efdf3a">
 
-## Sample output
+## Sample Output
 
 ```
 Checking AMC: amc-orpheum-7
