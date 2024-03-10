@@ -73,6 +73,8 @@ async function getShowtimes(yyyyMMdd, name) {
     return imax70mm;
   });
 
+  console.log("Date:", yyyyMMdd, "Showtimes:", imaxShowtimes.length);
+
   return imaxShowtimes;
 }
 
