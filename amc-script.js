@@ -3,16 +3,8 @@
  */
 
 const MOVIE_NAME = "Dune: Part Two";
-const MOVIE_THEATER = "amc-lincoln-square-13";
-const SHOWTIME_ATTRIBUTE = "imax";
 
-const DAYS = 20;
-const AMC_URL = "https://www.amctheatres.com";
-const DELAY_MS = 500;
-
-const GOOD_SEAT_BUFFER_RATIO = 0.3;
-
-const NYC_AMCs = [
+const NYC_AMC_THEATERS = [
   "amc-orpheum-7",
   "amc-lincoln-square-13",
   "amc-84th-street-6",
@@ -24,6 +16,16 @@ const NYC_AMCs = [
   "amc-village-7",
   "amc-newport-centre-11",
 ];
+const MOVIE_THEATER = NYC_AMC_THEATERS[1];
+const SHOWTIME_ATTRIBUTE = "imax"; // or "dolby", etc. See more values in amc-constants.js
+
+const DAYS = 14;
+const AMC_URL = "https://www.amctheatres.com";
+const DELAY_MS = 500;
+
+const GOOD_SEAT_BUFFER_RATIO = 0.3;
+
+const INVALID_SEATS = ["NotASeat", "Companion", "Wheelchair"];
 
 // Enable to check only for Tuesdays (discount day for AMC)
 const CHECK_ONLY_TUESDAYS = false;
@@ -153,7 +155,8 @@ function getGoodRows(seatMap) {
   const goodRows = allRows.filter(
     (row) =>
       characterToNumber(row) >= minRow + buffer &&
-      characterToNumber(row) <= maxRow - buffer
+      // Central seats in back rowas are good too, so using a smaller buffer
+      characterToNumber(row) <= maxRow - buffer / 2
   );
   return goodRows;
 }
@@ -182,8 +185,9 @@ async function checkShowtime(yyyyMMdd, theaterId, showtime) {
   if (!apolloData) {
     return [];
   }
+
   const allSeats = Object.values(apolloData).filter(
-    (seat) => seat.__typename === "Seat" && seat.type === "CanReserve"
+    (seat) => seat.__typename === "Seat" && !INVALID_SEATS.includes(seat.type)
   );
   const seatMap = getSeatMap(allSeats);
   const goodRows = getGoodRows(seatMap);
@@ -207,6 +211,7 @@ async function checkShowtime(yyyyMMdd, theaterId, showtime) {
   //     "Date:",
   //     yyyyMMdd,
   //     getDayOfWeek(showtime.when),
+  //     new Date(showtime.when).toLocaleTimeString(),
   //     "Showtime ID:",
   //     showtime.showtimeId,
   //     "All Seats #:",
@@ -285,16 +290,16 @@ async function checkShowtimesForDateRange(theaterId) {
   }
 }
 
-checkShowtimesForDateRange(MOVIE_THEATER);
+// checkShowtimesForDateRange(MOVIE_THEATER);
 
 /*
  * Main function to check showtimes for all AMC theaters in NYC.
  */
 async function checkShowtimesForAllAMCs() {
-  for (let i = 0; i < NYC_AMCs.length; i++) {
-    console.log("Checking AMC:", NYC_AMCs[i]);
-    await checkShowtimesForDateRange(NYC_AMCs[i]);
+  for (let i = 0; i < NYC_AMC_THEATERS.length; i++) {
+    console.log("Checking AMC:", NYC_AMC_THEATERS[i]);
+    await checkShowtimesForDateRange(NYC_AMC_THEATERS[i]);
   }
 }
 
-// checkShowtimesForAllAMCs();
+checkShowtimesForAllAMCs();
