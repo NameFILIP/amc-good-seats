@@ -10,6 +10,10 @@ const END_COLUMN = 35;
 const MOVIE_THEATER = "amc-lincoln-square-13";
 const THEATER_TYPE_CODE = "imax70mm";
 
+function getShowtimeURL(yyyyMMdd, showtimeId) {
+  return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
+}
+
 async function getApolloData(url) {
   try {
     const response = await fetch(url);
@@ -88,7 +92,7 @@ function sortSeats(seats) {
 }
 
 async function checkShowtime(yyyyMMdd, showtimeId) {
-  const url = `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
+  const url = getShowtimeURL(yyyyMMdd, showtimeId);
   const apolloData = await getApolloData(url);
   if (!apolloData) {
     return [];
@@ -155,13 +159,18 @@ async function checkShowtimesForDateRange() {
       if (onlyGood.length > 0) {
         goodSeatsForShowtimes[dateString] =
           goodSeatsForShowtimes[dateString] ?? {};
-        goodSeatsForShowtimes[dateString][showtime.showtimeId] = onlyGood;
+        // Check if dateString is Tuesday (discounted tickets day)
+        const isTuesday = new Date(dateString).getDay() === 2;
+        goodSeatsForShowtimes[dateString][showtime.showtimeId] = {
+          url: getShowtimeURL(dateString, showtime.showtimeId),
+          seats: onlyGood,
+          isTuesday,
+        };
       }
       delay(1000);
     }
   }
-
-  console.log({ goodSeatsForShowtimes });
+  console.log(JSON.stringify(goodSeatsForShowtimes, null, 2));
 }
 
 checkShowtimesForDateRange();
