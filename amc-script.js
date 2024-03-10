@@ -9,6 +9,7 @@ const DAYS = 30;
 const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
 const START_COLUMN = 10;
 const END_COLUMN = 35;
+const AMC_URL = "https://www.amctheatres.com";
 
 function getShowtimeURL(yyyyMMdd, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
@@ -162,7 +163,7 @@ async function checkShowtimesForDateRange() {
         // Check if dateString is Tuesday (discounted tickets day)
         const isTuesday = new Date(dateString).getDay() === 2;
         goodSeatsForShowtimes[dateString][showtime.showtimeId] = {
-          url: getShowtimeURL(dateString, showtime.showtimeId),
+          url: AMC_URL + getShowtimeURL(dateString, showtime.showtimeId),
           goodSeats: onlyGood,
           isTuesday,
         };
