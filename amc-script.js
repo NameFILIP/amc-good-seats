@@ -60,7 +60,9 @@ async function getShowtimes(yyyyMMdd, name) {
     return imax70mm;
   });
 
-  console.log({ yyyyMMdd, name, imaxShowtimes });
+  if (imaxShowtimes.length > 0) {
+    console.log({ yyyyMMdd, name, imaxShowtimes });
+  }
 
   return imaxShowtimes;
 }
@@ -110,18 +112,20 @@ async function checkShowtime(yyyyMMdd, showtimeId) {
 
   const onlyGood = seats.filter((seat) => goodSeats.has(seat.name));
 
-  console.log(
-    "Date:",
-    yyyyMMdd,
-    "Showtime ID:",
-    showtimeId,
-    "All Seats #:",
-    seats.length,
-    "Good Seats #:",
-    onlyGood.length,
-    "Good Seats Names:",
-    onlyGood.map((seat) => seat.name)
-  );
+  if (onlyGood.length > 0) {
+    console.log(
+      "Date:",
+      yyyyMMdd,
+      "Showtime ID:",
+      showtimeId,
+      "All Seats #:",
+      seats.length,
+      "Good Seats #:",
+      onlyGood.length,
+      "Good Seats Names:",
+      onlyGood.map((seat) => seat.name)
+    );
+  }
 
   // Sort by seat name (e.g. E1, E9, E10, E11, E12, ...)
   sortSeats(onlyGood);
