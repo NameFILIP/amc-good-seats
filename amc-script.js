@@ -25,6 +25,9 @@ const NYC_AMCs = [
   "amc-newport-centre-11",
 ];
 
+// Enable to check only for Tuesdays (discount day for AMC)
+const CHECK_ONLY_TUESDAYS = false;
+
 function getShowtimeURL(yyyyMMdd, theaterId, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${theaterId}/all/${showtimeId}`;
 }
@@ -249,28 +252,29 @@ async function checkShowtimesForDateRange(theaterId) {
   for (let i = 0; i < dateStrings.length; i++) {
     const dateString = dateStrings[i];
     const showtimes = await getShowtimes(dateString, theaterId, MOVIE_NAME);
+    showtimes.sort((a, b) => new Date(a.when) - new Date(b.when));
 
     delay(DELAY_MS);
 
     for (let j = 0; j < showtimes.length; j++) {
       const showtime = showtimes[j];
 
-      // Enable to check only for Tuesdays (discount day for AMC)
-      // if (getDayOfWeek(showtime.when) !== "Tuesday") {
-      //   continue;
-      // }
+      if (CHECK_ONLY_TUESDAYS && getDayOfWeek(showtime.when) !== "Tuesday") {
+        continue;
+      }
 
       const onlyGood = await checkShowtime(dateString, theaterId, showtime);
       if (onlyGood.length > 0) {
-        goodSeatsForShowtimes[dateString] =
-          goodSeatsForShowtimes[dateString] ?? {};
-        goodSeatsForShowtimes[dateString][showtime.showtimeId] = {
+        const time = new Date(showtime.when).toLocaleTimeString();
+        const dayOfWeek = getDayOfWeek(showtime.when);
+        const dateAndDay = `${dateString}-${dayOfWeek}`;
+        goodSeatsForShowtimes[dateAndDay] =
+          goodSeatsForShowtimes[dateAndDay] ?? {};
+        goodSeatsForShowtimes[dateAndDay][time] = {
           url:
             AMC_URL +
             getShowtimeURL(dateString, theaterId, showtime.showtimeId),
-          time: new Date(showtime.when).toLocaleTimeString(),
           goodSeats: onlyGood.join(),
-          dayOfWeek: getDayOfWeek(showtime.when),
         };
       }
       delay(DELAY_MS);
