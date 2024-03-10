@@ -17,7 +17,7 @@
       "goodSeats": [
         "F28"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Friday"
     }
   },
   "2024-03-19": {
@@ -26,7 +26,7 @@
       "goodSeats": [
         "E33"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Monday"
     }
   },
   "2024-03-21": {
@@ -37,7 +37,7 @@
         "E34",
         "E35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Wednesday"
     },
     "119581406": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-21/amc-lincoln-square-13/all/119581406",
@@ -45,7 +45,7 @@
         "E34",
         "E35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Wednesday"
     },
     "119581408": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-21/amc-lincoln-square-13/all/119581408",
@@ -53,7 +53,7 @@
         "E34",
         "E35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Wednesday"
     }
   },
   "2024-03-22": {
@@ -62,14 +62,14 @@
       "goodSeats": [
         "E35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Thursday"
     },
     "119581412": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-22/amc-lincoln-square-13/all/119581412",
       "goodSeats": [
         "E35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Thursday"
     }
   },
   "2024-03-23": {
@@ -79,7 +79,7 @@
         "E34",
         "E35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Friday"
     }
   },
   "2024-03-24": {
@@ -90,8 +90,6 @@
         "E11",
         "E12",
         "E13",
-        "E14",
-        "E15",
         "E32",
         "E33",
         "E34",
@@ -105,7 +103,7 @@
         "K35",
         "L35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Saturday"
     }
   },
   "2024-03-25": {
@@ -124,7 +122,7 @@
         "F34",
         "F35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Sunday"
     },
     "119581424": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-25/amc-lincoln-square-13/all/119581424",
@@ -136,10 +134,9 @@
         "E34",
         "E35",
         "F34",
-        "F35",
-        "G35"
+        "F35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Sunday"
     },
     "119581426": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-25/amc-lincoln-square-13/all/119581426",
@@ -152,7 +149,7 @@
         "F34",
         "F35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Sunday"
     }
   },
   "2024-03-26": {
@@ -168,7 +165,7 @@
         "F34",
         "F35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Monday"
     },
     "119581429": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-26/amc-lincoln-square-13/all/119581429",
@@ -185,7 +182,7 @@
         "F35",
         "G35"
       ],
-      "isTuesday": false
+      "dayOfWeek": "Monday"
     }
   },
   "2024-03-27": {
@@ -202,7 +199,7 @@
         "F35",
         "G35"
       ],
-      "isTuesday": true
+      "dayOfWeek": "Tuesday"
     },
     "119581431": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-27/amc-lincoln-square-13/all/119581431",
@@ -214,7 +211,7 @@
         "F34",
         "F35"
       ],
-      "isTuesday": true
+      "dayOfWeek": "Tuesday"
     },
     "119581433": {
       "url": "https://www.amctheatres.com/showtimes/all/2024-03-27/amc-lincoln-square-13/all/119581433",
@@ -226,7 +223,7 @@
         "E35",
         "F35"
       ],
-      "isTuesday": true
+      "dayOfWeek": "Tuesday"
     }
   }
 }
