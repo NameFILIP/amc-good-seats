@@ -48,16 +48,3 @@ const ATTRIBUTE_NAMES = [
   "International Films",
   "German Spoken with English Subtitles",
 ];
-
-const NYC_AMCs = [
-  "amc-orpheum-7",
-  "amc-lincoln-square-13",
-  "amc-84th-street-6",
-  "amc-magic-johnson-harlem-9",
-  "amc-empire-25",
-  "amc-kips-bay-15",
-  "amc-34th-street-14",
-  "amc-19th-st-east-6",
-  "amc-village-7",
-  "amc-newport-centre-11",
-];

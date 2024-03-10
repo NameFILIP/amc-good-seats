@@ -94,9 +94,9 @@ async function getShowtimes(yyyyMMdd, theaterId, name) {
     return hasAttribute;
   });
 
-  if (filteredShowtimes.length > 0) {
-    console.log("Date:", yyyyMMdd, "Showtimes:", filteredShowtimes.length);
-  }
+  // if (filteredShowtimes.length > 0) {
+  //   console.log("Date:", yyyyMMdd, "Showtimes:", filteredShowtimes.length);
+  // }
 
   return filteredShowtimes;
 }
@@ -199,21 +199,21 @@ async function checkShowtime(yyyyMMdd, theaterId, showtime) {
     return goodColumns.includes(column);
   });
 
-  if (onlyGood.length > 0) {
-    console.log(
-      "Date:",
-      yyyyMMdd,
-      getDayOfWeek(showtime.when),
-      "Showtime ID:",
-      showtime.showtimeId,
-      "All Seats #:",
-      availableSeats.length,
-      "Good Seats #:",
-      onlyGood.length,
-      "Good Seats Names:",
-      onlyGood.map((seat) => seat.name)
-    );
-  }
+  // if (onlyGood.length > 0) {
+  //   console.log(
+  //     "Date:",
+  //     yyyyMMdd,
+  //     getDayOfWeek(showtime.when),
+  //     "Showtime ID:",
+  //     showtime.showtimeId,
+  //     "All Seats #:",
+  //     availableSeats.length,
+  //     "Good Seats #:",
+  //     onlyGood.length,
+  //     "Good Seats Names:",
+  //     onlyGood.map((seat) => seat.name)
+  //   );
+  // }
 
   // Sort by seat name (e.g. E1, E9, E10, E11, E12, ...)
   sortSeats(onlyGood);
@@ -269,14 +269,16 @@ async function checkShowtimesForDateRange(theaterId) {
             AMC_URL +
             getShowtimeURL(dateString, theaterId, showtime.showtimeId),
           time: new Date(showtime.when).toLocaleTimeString(),
-          goodSeats: onlyGood,
+          goodSeats: onlyGood.join(),
           dayOfWeek: getDayOfWeek(showtime.when),
         };
       }
       delay(DELAY_MS);
     }
   }
-  console.log(JSON.stringify(goodSeatsForShowtimes, null, 2));
+  if (Object.keys(goodSeatsForShowtimes).length > 0) {
+    console.log(JSON.stringify(goodSeatsForShowtimes, null, 2));
+  }
 }
 
 checkShowtimesForDateRange(MOVIE_THEATER);
