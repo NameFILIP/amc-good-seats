@@ -4,13 +4,26 @@
 
 const MOVIE_NAME = "Dune: Part Two";
 const MOVIE_THEATER = "amc-lincoln-square-13";
-const THEATER_TYPE_CODE = "imax70mm";
+const SHOWTIME_ATTRIBUTE = "70mm";
 const DAYS = 20;
 const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
 const START_COLUMN = 10;
 const END_COLUMN = 35;
 const AMC_URL = "https://www.amctheatres.com";
 const DELAY_MS = 500;
+
+const NYC_AMCs = [
+  "amc-orpheum-7",
+  "amc-lincoln-square-13",
+  "amc-84th-street-6",
+  "amc-magic-johnson-harlem-9",
+  "amc-empire-25",
+  "amc-kips-bay-15",
+  "amc-34th-street-14",
+  "amc-19th-st-east-6",
+  "amc-village-7",
+  "amc-newport-centre-11",
+];
 
 function getShowtimeURL(yyyyMMdd, showtimeId) {
   return `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
@@ -69,7 +82,7 @@ async function getShowtimes(yyyyMMdd, name) {
     const attributes = apolloData[attrubutesId];
     const edges = attributes.edges.map((edge) => apolloData[edge.__ref]);
     const nodes = edges.map((edge) => apolloData[edge.node.__ref]);
-    const imax70mm = nodes.some((node) => node.code === THEATER_TYPE_CODE);
+    const imax70mm = nodes.some((node) => node.name === SHOWTIME_ATTRIBUTE);
     return imax70mm;
   });
 
