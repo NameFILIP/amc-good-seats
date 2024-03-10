@@ -11,233 +11,43 @@
 
 ```
 {
-  "2024-03-09": {
-    "118671174": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-09/amc-lincoln-square-13/all/118671174",
-      "time": "8:30:00 AM",
-      "goodSeats": [
-        "F28"
-      ],
-      "dayOfWeek": "Friday"
+  "2024-03-12": {
+    "118589792": {
+      "url": "https://www.amctheatres.com/showtimes/all/2024-03-12/amc-34th-street-14/all/118589792",
+      "time": "11:45:00 AM",
+      "goodSeats": "E7,E8,E11,E12,F7,F8,F10,F12,G12,H9,H11",
+      "dayOfWeek": "Tuesday"
+    },
+    "118589793": {
+      "url": "https://www.amctheatres.com/showtimes/all/2024-03-12/amc-34th-street-14/all/118589793",
+      "time": "3:20:00 PM",
+      "goodSeats": "E7,E8,E11,E12,F8,F12,G7,G11",
+      "dayOfWeek": "Tuesday"
+    },
+    "118589795": {
+      "url": "https://www.amctheatres.com/showtimes/all/2024-03-12/amc-34th-street-14/all/118589795",
+      "time": "10:35:00 PM",
+      "goodSeats": "E7,E8,E11,E12,G11",
+      "dayOfWeek": "Tuesday"
     }
   },
   "2024-03-19": {
-    "118590680": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-19/amc-lincoln-square-13/all/118590680",
-      "time": "3:00:00 PM",
-      "goodSeats": [
-        "E33"
-      ],
-      "dayOfWeek": "Monday"
-    }
-  },
-  "2024-03-21": {
-    "119581405": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-21/amc-lincoln-square-13/all/119581405",
-      "time": "11:15:00 AM",
-      "goodSeats": [
-        "E10",
-        "E34",
-        "E35"
-      ],
-      "dayOfWeek": "Wednesday"
-    },
-    "119581406": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-21/amc-lincoln-square-13/all/119581406",
-      "time": "3:00:00 PM",
-      "goodSeats": [
-        "E34",
-        "E35"
-      ],
-      "dayOfWeek": "Wednesday"
-    },
-    "119581408": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-21/amc-lincoln-square-13/all/119581408",
-      "time": "10:30:00 PM",
-      "goodSeats": [
-        "E34",
-        "E35"
-      ],
-      "dayOfWeek": "Wednesday"
-    }
-  },
-  "2024-03-22": {
-    "119581410": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-22/amc-lincoln-square-13/all/119581410",
-      "time": "12:15:00 PM",
-      "goodSeats": [
-        "E35"
-      ],
-      "dayOfWeek": "Thursday"
-    },
-    "119581412": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-22/amc-lincoln-square-13/all/119581412",
-      "time": "11:30:00 PM",
-      "goodSeats": [
-        "E35"
-      ],
-      "dayOfWeek": "Thursday"
-    }
-  },
-  "2024-03-23": {
-    "119581416": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-23/amc-lincoln-square-13/all/119581416",
-      "time": "11:30:00 PM",
-      "goodSeats": [
-        "E34",
-        "E35"
-      ],
-      "dayOfWeek": "Friday"
-    }
-  },
-  "2024-03-24": {
-    "119581420": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-24/amc-lincoln-square-13/all/119581420",
-      "time": "11:30:00 PM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E32",
-        "E33",
-        "E34",
-        "E35",
-        "F10",
-        "F11",
-        "G34",
-        "G35",
-        "H35",
-        "K34",
-        "K35",
-        "L35"
-      ],
-      "dayOfWeek": "Saturday"
-    }
-  },
-  "2024-03-25": {
-    "119581423": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-25/amc-lincoln-square-13/all/119581423",
-      "time": "11:15:00 AM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E12",
-        "E14",
-        "E31",
-        "E32",
-        "E33",
-        "E34",
-        "E35",
-        "F34",
-        "F35"
-      ],
-      "dayOfWeek": "Sunday"
-    },
-    "119581424": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-25/amc-lincoln-square-13/all/119581424",
-      "time": "3:00:00 PM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E31",
-        "E32",
-        "E34",
-        "E35",
-        "F34",
-        "F35"
-      ],
-      "dayOfWeek": "Sunday"
-    },
-    "119581426": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-25/amc-lincoln-square-13/all/119581426",
-      "time": "10:30:00 PM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E33",
-        "E34",
-        "E35",
-        "F34",
-        "F35"
-      ],
-      "dayOfWeek": "Sunday"
-    }
-  },
-  "2024-03-26": {
-    "119581427": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-26/amc-lincoln-square-13/all/119581427",
-      "time": "3:00:00 PM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E32",
-        "E33",
-        "E34",
-        "E35",
-        "F34",
-        "F35"
-      ],
-      "dayOfWeek": "Monday"
-    },
-    "119581429": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-26/amc-lincoln-square-13/all/119581429",
-      "time": "10:30:00 PM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E12",
-        "E33",
-        "E34",
-        "E35",
-        "F10",
-        "F33",
-        "F34",
-        "F35",
-        "G35"
-      ],
-      "dayOfWeek": "Monday"
-    }
-  },
-  "2024-03-27": {
-    "119581430": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-27/amc-lincoln-square-13/all/119581430",
-      "time": "11:15:00 AM",
-      "goodSeats": [
-        "E10",
-        "E11",
-        "E32",
-        "E33",
-        "E34",
-        "E35",
-        "F34",
-        "F35",
-        "G35"
-      ],
+    "118589732": {
+      "url": "https://www.amctheatres.com/showtimes/all/2024-03-19/amc-34th-street-14/all/118589732",
+      "time": "2:20:00 PM",
+      "goodSeats": "E7,E8,E9,E10,E11,E12,F7,F8,F9,F10,F11,F12,G7,G8,G9,G11,G12,H7,H8,H9,H10,H11,H12",
       "dayOfWeek": "Tuesday"
     },
-    "119581431": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-27/amc-lincoln-square-13/all/119581431",
-      "time": "3:00:00 PM",
-      "goodSeats": [
-        "E32",
-        "E33",
-        "E34",
-        "E35",
-        "F34",
-        "F35"
-      ],
+    "118589733": {
+      "url": "https://www.amctheatres.com/showtimes/all/2024-03-19/amc-34th-street-14/all/118589733",
+      "time": "6:00:00 PM",
+      "goodSeats": "G10",
       "dayOfWeek": "Tuesday"
     },
-    "119581433": {
-      "url": "https://www.amctheatres.com/showtimes/all/2024-03-27/amc-lincoln-square-13/all/119581433",
-      "time": "10:30:00 PM",
-      "goodSeats": [
-        "E10",
-        "E32",
-        "E33",
-        "E34",
-        "E35",
-        "F35"
-      ],
+    "118589734": {
+      "url": "https://www.amctheatres.com/showtimes/all/2024-03-19/amc-34th-street-14/all/118589734",
+      "time": "9:35:00 PM",
+      "goodSeats": "E7,E8,E9,E10,E11,E12,F7,F8,F12,G7,G12,H7,H8",
       "dayOfWeek": "Tuesday"
     }
   }
