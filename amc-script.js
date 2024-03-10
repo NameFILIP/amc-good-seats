@@ -1,3 +1,11 @@
+const MOVIE_NAME = "Dune: Part Two";
+const DAYS = 30;
+const GOOD_ROWS = ["E", "F", "G", "H", "I", "J", "K", "L"];
+const START_COLUMN = 10;
+const END_COLUMN = 35;
+const MOVIE_THEATER = "amc-lincoln-square-13";
+const THEATER_TYPE_CODE = "imax70mm";
+
 async function getApolloData(url) {
   try {
     const response = await fetch(url);
@@ -14,7 +22,7 @@ async function getApolloData(url) {
 }
 
 async function getShowtimes(yyyyMMdd, name) {
-  const url = `/showtimes/all/${yyyyMMdd}/amc-lincoln-square-13/all`;
+  const url = `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all`;
   const apolloData = await getApolloData(url);
   if (!apolloData) {
     return [];
@@ -38,7 +46,7 @@ async function getShowtimes(yyyyMMdd, name) {
     const attributes = apolloData[attrubutesId];
     const edges = attributes.edges.map((edge) => apolloData[edge.__ref]);
     const nodes = edges.map((edge) => apolloData[edge.node.__ref]);
-    const imax70mm = nodes.some((node) => node.code === "imax70mm");
+    const imax70mm = nodes.some((node) => node.code === THEATER_TYPE_CODE);
     return imax70mm;
   });
 
@@ -52,8 +60,8 @@ async function getShowtimes(yyyyMMdd, name) {
  */
 function generateGoodSeats() {
   const goodSeats = new Set();
-  ["E", "F", "G", "H", "I", "J", "K", "L"].forEach((row) => {
-    for (let i = 10; i <= 35; i++) {
+  GOOD_ROWS.forEach((row) => {
+    for (let i = START_COLUMN; i <= END_COLUMN; i++) {
       goodSeats.add(`${row}${i}`);
     }
   });
@@ -63,7 +71,7 @@ function generateGoodSeats() {
 const goodSeats = generateGoodSeats();
 
 async function checkShowtime(yyyyMMdd, showtimeId) {
-  const url = `/showtimes/all/${yyyyMMdd}/amc-lincoln-square-13/all/${showtimeId}`;
+  const url = `/showtimes/all/${yyyyMMdd}/${MOVIE_THEATER}/all/${showtimeId}`;
   const apolloData = await getApolloData(url);
   if (!apolloData) {
     return [];
@@ -98,7 +106,7 @@ async function checkShowtime(yyyyMMdd, showtimeId) {
 // Generate date strings from today for the next 30 days in format 'YYYY-MM-DD'
 function generateDateStrings() {
   const dateStrings = [];
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < DAYS; i++) {
     const date = new Date();
     date.setDate(date.getDate() + i);
     const yyyy = date.getFullYear();
@@ -108,8 +116,6 @@ function generateDateStrings() {
   }
   return dateStrings;
 }
-
-const MOVIE_NAME = "Dune: Part Two";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
